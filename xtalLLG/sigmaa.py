@@ -4,7 +4,9 @@ from tqdm import tqdm
 import numpy as np
 
 
-def refine_sigmaa(unique_labels, bin_labels, Eobs, Ecalc, centric):
+def refine_sigmaa(
+    unique_labels, bin_labels, Eobs, Ecalc, centric, device=dsutils.try_gpu()
+):
     # Training loop
     num_epochs = 25
     sigma_As = [[] for _ in range(len(unique_labels))]
@@ -25,7 +27,7 @@ def refine_sigmaa(unique_labels, bin_labels, Eobs, Ecalc, centric):
             sigma_As[i],
             dtype=torch.float32,
             requires_grad=True,
-            device=dsutils.try_gpu(),
+            device=device,
         )
 
         # optimizer = torch.optim.RMSprop([sigma_As[i]], lr=6e-4)

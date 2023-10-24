@@ -23,7 +23,7 @@ def write_pdb_with_positions(input_pdb_file, positions, output_pdb_file):
                 f_out.write(line)
 
 
-def fractionalize_torch(atom_pos_orth, unitcell, spacegroup):
+def fractionalize_torch(atom_pos_orth, unitcell, spacegroup, device=dsutils.try_gpu()):
     """
     Apply symmetry operations to real space asu model coordinates
 
@@ -38,8 +38,9 @@ def fractionalize_torch(atom_pos_orth, unitcell, spacegroup):
     ------
     atom_pos_sym_oped, [N_atoms, N_ops, 3] tensor in either fractional or orthogonal coordinates
     """
+    atom_pos_orth.to(device=device)
     orth2frac_tensor = torch.tensor(
-        unitcell.fractionalization_matrix.tolist(), device=dsutils.try_gpu()
+        unitcell.fractionalization_matrix.tolist(), device=device
     )
     atom_pos_frac = torch.tensordot(atom_pos_orth, orth2frac_tensor.T, 1)
 

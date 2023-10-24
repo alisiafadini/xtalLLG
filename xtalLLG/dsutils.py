@@ -9,6 +9,7 @@ def load_mtz(mtz):
 
     return dataset
 
+
 def try_gpu(i=0):
     if torch.cuda.device_count() >= i + 1:
         return torch.device(f"cuda:{i}")
@@ -34,4 +35,3 @@ def is_list_or_tuple(x):
 
 def d2q(d):
     return 2 * np.pi / d
-
